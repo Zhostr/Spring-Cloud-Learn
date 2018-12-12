@@ -1,0 +1,18 @@
+spring:
+  application:
+    # 应用名称可以相同
+    name: first-eureka-customer
+
+server:
+  port: 9090
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+
+management:
+  security:
+    enabled: false

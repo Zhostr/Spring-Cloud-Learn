@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: cloud-config
+  config:
+    # 配置的名称，好像没啥用，调用 http://localhost:8080/cloud-config/test 出来的 name 也不是它
+    name: config-server11
+  cloud:
+    config:
+      server:
+        git:
+          # uri 是要加载配置信息的 git 仓库地址
+          # 可以通过 HTTP 调用获取（直接在地址栏中写），/{application}/{profile}[/{label}] 或者 /{application}-{profile}.yml 等，https://cloud.spring.io/spring-cloud-static/Edgware.SR5/single/spring-cloud.html#_quick_start
+          # {application} --- 对应 config 客户端的 spring.config.name
+          #     {profile} --- 对应 config 客户端的 active profile
+          #       {label} --- git 分支，默认为 master
+          # 如 http://localhost:8080/cloud-config/test 获取此 Git 仓库 根目录/environment_01 目录下的 cloud-config-test.yml 文件
+          uri: https://github.com/Pliza/config-server
+          search-paths: ${application}
+
+server:
+  port: 9596
