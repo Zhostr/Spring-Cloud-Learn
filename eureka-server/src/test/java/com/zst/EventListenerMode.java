@@ -33,9 +33,16 @@ public class EventListenerMode {
         }
     }
 
+    /**
+     * SpringApplication.run(ConfigServerApplication.class) 也是以这种方式启动的
+     * @param args
+     */
     public static void main(String[] args) {
         AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext();
-        configApplicationContext.addApplicationListener(new CustomEventListener());
+        //增加监听器
+//        configApplicationContext.addApplicationListener(new CustomEventListener());
+        configApplicationContext.register(CustomEventListener.class);
+        //只能调用一次 refresh 方法
         configApplicationContext.refresh();
 
         //保证 publishEvent/refresh 和 addApplicationListener 的顺序

@@ -3,9 +3,7 @@ package com.zst.controller;
 import com.zst.entity.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,6 +34,18 @@ public class PersonController {
                      .name(name)
                      .msg(httpServletRequest.getRequestURL().toString())
                      .build();
+    }
+
+
+    @GetMapping("hello")
+    public String hello() {
+        return "Hello Feign!";
+    }
+
+    @PostMapping("showPerson")
+    public String jsonParam(@RequestBody Person p){
+        log.info("param = {}", p);
+        return p.toString();
     }
 
 }

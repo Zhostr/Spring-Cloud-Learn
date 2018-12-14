@@ -1,23 +1,25 @@
 # 多环境通用配置
 spring:
   application:
-    name: first-cloud-server
+    name: eureka-server #first-cloud-server
   cloud:
     config:
-      uri: http://localhost:9596  #指定 Spring Cloud Config 配置服务器
-      label: master               #拉取内容的分支名，默认为 master
-      profile: test
-      name: cloud-config
+#      uri: http://localhost:8888  #指定 Spring Cloud Config 配置服务器
+#      label: master               #拉取内容的分支名，默认为 master
+#      profile: test
+#      name: cloud-config
 
   profiles:
-    active: dev_01 #${profiles.active}  #指定生效的配置，可以通过 java -jar xxx.jar --spring.profiles.active=x 指定.
+    active: ${profiles.active}  #指定生效的配置，可以通过 java -jar xxx.jar --spring.profiles.active=x 指定.
 
-
+management:
+  security:
+    enabled: false
 ---
 server:
   port: 8761
 spring:
-  profiles: dev_01
+  profiles: dev
   # 服务在启动时，会把自己当做一个 Eureka 客户端去注册到 Eureka 服务器上，且从服务器上拉取信息
   # 而该服务本身就是一个 Eureka 服务器（现在是配置 Eureka 集群，需要彼此相互注册）
 eureka:
@@ -25,18 +27,18 @@ eureka:
     hostname: localhost
   client:
     # 声明是否将自己的信息注册到 Eureka 服务器上
-    register-with-eureka: false
+#    register-with-eureka: false
     # 是否到 Eureka 服务器中抓取注册信息
-    fetch-registry: false
-#    serviceUrl:
-#      defaultZone: http://localhost:8762/eureka/
+#    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://localhost:8762/eureka/
 
 
 ---
 server:
   port: 8762
 spring:
-  profiles: dev_02
+  profiles: test
 eureka:
   instance:
     hostname: Zhoust

@@ -1,6 +1,5 @@
 spring:
   application:
-    # 应用名称可以相同
     name: first-eureka-customer
 
 server:
