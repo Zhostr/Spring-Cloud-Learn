@@ -13,7 +13,10 @@ eureka:
   instance:
     # 该服务的主机名称
     hostname: localhost
+    prefer-ip-address: true #http://www.itmuch.com/spring-cloud-code-read/spring-cloud-code-read-eureka-registry-ip/ TODO
   client:
+    healthcheck:
+      enabled: true
     # 服务器端调用健康检查处理器 getStatus() 方法的时间间隔，默认时间间隔 30s
     #instanceInfoReplicationIntervalSeconds: 10
     serviceUrl:
