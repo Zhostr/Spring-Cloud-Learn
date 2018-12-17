@@ -4,10 +4,12 @@ import com.zst.controller.MockHealth;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
+import org.springframework.cloud.config.client.ConfigServerHealthIndicator;
 import org.springframework.stereotype.Component;
 
 /**
  * @description: 自定义健康检查指示器
+ * @see ConfigServerHealthIndicator
  * @author: Zhoust
  * @date: 2018/11/28 上午9:36
  * @version: V1.0
