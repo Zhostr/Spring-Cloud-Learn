@@ -30,4 +30,4 @@ page-routes.js
 page-init-state.js
 .happypack
 .DS_Store
-/target
+/target/
