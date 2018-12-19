@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: config-server-from-application
+
+server:
+  port: 7777

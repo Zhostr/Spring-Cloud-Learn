@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: Smart-Gateway
+
+server:
+  port: 8900
+
+
+management:
+  security:
+    enabled: false

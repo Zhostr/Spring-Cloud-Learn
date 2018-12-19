@@ -1,9 +1,13 @@
 package com.zst.controller;
 
+import com.zst.entity.Person;
+import com.zst.feign.FirstEurekaProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,6 +20,10 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @Configuration
 public class InvokerController {
+
+
+    @Autowired
+    private FirstEurekaProvider personService;
 
     @Bean
     @LoadBalanced
@@ -31,6 +39,11 @@ public class InvokerController {
         //通过服务名称进行调用
         String forObject = restTemplate.getForObject("http://first-eureka-provider/get/100", String.class);
         return forObject;
+    }
+
+    @GetMapping("getPerson/{id}")
+    public Person getPersonInformation(@PathVariable("id")String id) {
+        return personService.getPersonById(Integer.valueOf(id));
     }
 
 }

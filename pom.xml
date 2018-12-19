@@ -76,6 +76,12 @@
             <artifactId>spring-boot-actuator</artifactId>
         </dependency>
 
+        <!-- Spring Cloud 封装的 Feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+        </dependency>
+
     </dependencies>
 
     <!-- 添加构建 Spring Boot 的插件，解决使用 java -jar xx.jar 方式启动时 ".jar中没有主清单属性" -->

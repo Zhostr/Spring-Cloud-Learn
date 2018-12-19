@@ -1,6 +1,6 @@
 spring:
   application:
-    name: config-server
+    name: config-server-from-bootstrap
 #  config:
 #    # There is a configserver.yml in the Config Server jar
 #    name: configserver
@@ -12,10 +12,12 @@ spring:
           # {application} --- 对应 config 客户端的 spring.application.name
           #     {profile} --- 对应 config 客户端的 spring.profiles.active
           #       {label} --- commit id, branch name or tag
-          # 如直接访问 http://localhost:888/eureka-client/dev 获取此 Git 仓库 的 eureka-client 目录下的 eureka-client-dev.yml 文件
+          # 如直接访问 http://localhost:8888/eureka-client/dev 获取此 Git 仓库 的 eureka-client 目录下的 eureka-client-dev.yml 文件
           uri: https://github.com/Pliza/config-server      # Git 仓库地址
           search-paths: /{application}                     # 仓库下的搜索目录（前面的 / 不能省略）
           force-pull: true
+          username: Pliza
+          password: 414971118@qq.zh111
 
 server:
   port: 8888
@@ -24,3 +26,4 @@ server:
 management:
   security:
     enabled: false
+

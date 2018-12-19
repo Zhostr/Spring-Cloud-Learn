@@ -10,7 +10,11 @@ eureka:
     hostname: localhost
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+      defaultZone: http://localhost:8761/eureka/ #,http://localhost:8762/eureka/
+
+feign:
+  hystrix:
+    enabled: true
 
 management:
   security:

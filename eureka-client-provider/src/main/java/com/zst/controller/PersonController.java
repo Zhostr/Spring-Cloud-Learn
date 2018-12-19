@@ -26,7 +26,7 @@ public class PersonController {
 
 
     @GetMapping("get/{id}")
-    public Person getPerson(@PathVariable("id") Integer id, HttpServletRequest httpServletRequest){
+    public Person getPerson(@PathVariable("id") Integer id, HttpServletRequest httpServletRequest) {
         log.info(httpServletRequest.getRequestURL().toString());
         return Person.builder()
                      .age(age)
@@ -43,7 +43,7 @@ public class PersonController {
     }
 
     @PostMapping("showPerson")
-    public String jsonParam(@RequestBody Person p){
+    public String jsonParam(@RequestBody Person p) {
         log.info("param = {}", p);
         return p.toString();
     }
