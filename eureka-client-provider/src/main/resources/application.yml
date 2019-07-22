@@ -1,29 +1,32 @@
 # 多环境通用配置，不能放其他内容？？TODO
 spring:
   application:
-    name: first-eureka-provider
+    name: provider
   profiles:
-    active: ${profiles.active}
-  cloud:
-    config:
-      uri: http://localhost:7777
+    active: dev_01
+#  cloud:
+#    config:
+#      uri: http://localhost:7777
 
-
+management:
+  security:
+    enabled: false # 默认值是 true，敏感端口不对外暴露，默认情况下这个只显示服务是否启动（UP），其他 HealthIndicator（discoveryComposite、diskSpace 等） 信息不输出
 ---
 server:
   port: 8848
 eureka:
   instance:
+#     preferIpAddress: true #http://www.itmuch.com/spring-cloud-code-read/spring-cloud-code-read-eureka-registry-ip/ TODO
     # 该服务的主机名称
-    hostname: localhost
-    prefer-ip-address: true #http://www.itmuch.com/spring-cloud-code-read/spring-cloud-code-read-eureka-registry-ip/ TODO
+      hostname: localhost
   client:
-    healthcheck:
-      enabled: true
+#    healthcheck:
+#      enabled: true
     # 服务器端调用健康检查处理器 getStatus() 方法的时间间隔，默认时间间隔 30s
-    #instanceInfoReplicationIntervalSeconds: 10
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/ #,http://localhost:8762/eureka/
+#    instanceInfoReplicationIntervalSeconds: 10
+    serviceUrl: #
+      defaultZone: http://localhost:9090/eureka/ #,http://localhost:8762/eureka/
+#    enabled: false #不使用 Eureka Server
 
 spring:
   profiles: dev_01
@@ -43,7 +46,7 @@ eureka:
   client:
     #instanceInfoReplicationIntervalSeconds: 10
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+      defaultZone: http://localhost:9090/eureka/ #,http://localhost:8762/eureka/
 
 spring:
   profiles: dev_02

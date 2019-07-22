@@ -5,27 +5,29 @@ spring:
   cloud:
     # 参考 http://localhost:xxxx/eureka-client/dev（格式 /{application}/{profile}）
     # 拉取 Spring Cloud Config Server 服务的内容（即获取 {config.uri}/{config.name}/{config.profile}）
-    config:
-      uri: http://localhost:7777  #指定 Spring Cloud Config 配置服务器
-      label: master               #拉取内容的分支名，默认为 master
-      profile: dev
-      name: eureka-client
+#    config:
+#      uri: http://localhost:7777  #指定 Spring Cloud Config 配置服务器
+#      label: master               #拉取内容的分支名，默认为 master
+#      profile: dev
+#      name: eureka-client         #如果要是不配置的话，会使用 ${spring.application.name}，观察控制台输出「Located environment」
   profiles:
-    active: ${profiles.active}  #指定生效的配置，可以通过 java -jar xxx.jar --spring.profiles.active=x 指定.
+    active: ${profiles.active:dev}  #指定生效的配置，可以通过  java -Dprofiles.active=dev -Dport=9999 -jar xx.jar
 
 management:
   security:
     enabled: false
 
-
 ---
 server:
-  port: 8761
+  port: ${port:9090}
 spring:
   profiles: dev
   # 服务在启动时，会把自己当做一个 Eureka 客户端去注册到 Eureka 服务器上，且从服务器上拉取信息
   # 而该服务本身就是一个 Eureka 服务器（现在是配置 Eureka 集群，需要彼此相互注册）
 eureka:
+  server:
+#    enable-self-preservation: false # 关闭自我保护机制，默认不关闭
+#    evictionIntervalTimerInMs: 4000 #剔除无效 Eureka 实例的时间间隔，默认是 60s
   instance:
     hostname: localhost
   client:
@@ -33,8 +35,8 @@ eureka:
     register-with-eureka: false
     # 是否到 Eureka 服务器中抓取注册信息
     fetch-registry: false
-#    serviceUrl:
-#      defaultZone: http://localhost:8762/eureka/
+    serviceUrl: # 注册到这些服务器的地址 Map of availability zone to list of fully qualified URLs to communicate with eureka server.
+      defaultZone: http://localhost:${server.port}/eureka/ #对应 EurekaClientConfigBean 类和 PeerEurekaNodes#resolvePeerUrls 方法，把默认地址配置成自己的地址
 
 
 ---

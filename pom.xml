@@ -26,7 +26,8 @@
 
     <parent>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
         <version>1.5.18.RELEASE</version>
         <relativePath/>
     </parent>
@@ -90,6 +91,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--不行就加上下面这个-->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
