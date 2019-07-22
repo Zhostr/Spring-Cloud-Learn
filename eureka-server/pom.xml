@@ -12,8 +12,6 @@
     <artifactId>eureka-server</artifactId>
     <name>eureka-server</name>
 
-    <!-- todo 指定生成的 jar 名 -->
-
     <dependencies>
 
         <dependency>
@@ -28,6 +26,7 @@
 
     </dependencies>
 
+    <!--指定生成的 jar 名-->
     <build>
         <finalName>eureka-server</finalName>
         <plugins>
