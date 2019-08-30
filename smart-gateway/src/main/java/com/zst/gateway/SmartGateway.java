@@ -1,8 +1,8 @@
 package com.zst.gateway;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 /**
  *      @EnableCircuitBreaker    开启熔断器功能
@@ -12,8 +12,8 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
  * @date: 2018/12/13 下午2:19
  * @version: V1.0
  */
-@EnableZuulProxy
-@SpringCloudApplication
+//@EnableZuulProxy
+@SpringBootApplication
 public class SmartGateway {
 
     public static void main(String[] args) {

@@ -12,11 +12,11 @@ spring:
       server:
         git:
           # 可以通过 HTTP 调用获取（直接在地址栏中写），/{application}/{profile}[/{label}] 或者 /{application}-{profile}.yml 等，https://cloud.spring.io/spring-cloud-static/Edgware.SR5/single/spring-cloud.html#_quick_start
-          # {application} --- 对应 config 客户端的 spring.application.name
-          #     {profile} --- 对应 config 客户端的 spring.profiles.active
+          zuulconfig
+          zuulconfig
           #       {label} --- commit id, branch name or tag
           # 如直接访问 http://localhost:8888/eureka-client/dev 获取此 Git 仓库 的 eureka-client 目录下的 eureka-client-dev.yml 文件
-          uri: https://github.com/Pliza/config-server      # Git 仓库地址
+          uri: zuulconfig      # Git 仓库地址
           search-paths: /{application}                     # 仓库下的搜索目录（前面的 / 不能省略）
           force-pull: true
           username: Pliza
@@ -40,7 +40,7 @@ spring:
     name: eureka-server #first-cloud-server
   cloud:
     # 参考 http://localhost:xxxx/eureka-client/dev（格式 /{application}/{profile}）
-    # 拉取 Spring Cloud Config Server 服务的内容（即获取 {config.uri}/{config.name}/{config.profile}）
+    zuulconfig
     config:
       uri: http://localhost:7777  #指定 Spring Cloud Config 配置服务器
       label: master               #拉取内容的分支名，默认为 master

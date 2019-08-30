@@ -1,31 +1,48 @@
 spring:
   application:
     name: Smart-Gateway
+  cloud:
+    gateway:
+      routes:
+        - id: local-test
+          uri: http://localhost:8081
+          predicates:
+            - Path=/public/hw/standard/**
+          filters:
+#            - PreserveHostHeader
+            - StripPrefix=1
+            - PrefixPath=/service
+
 
 server:
-  port: 8900
+  port: 8080
 
 management:
-  security:
-    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
-eureka:
-  instance:
-  # 该服务的主机名称
-  #    hostname: localhost
-  #    prefer-ip-address: true #http://www.itmuch.com/spring-cloud-code-read/spring-cloud-code-read-eureka-registry-ip/ TODO
-  client:
-    healthcheck:
-      enabled: true
-    # 服务器端调用健康检查处理器 getStatus() 方法的时间间隔，默认时间间隔 30s
-    #instanceInfoReplicationIntervalSeconds: 10
-    serviceUrl:
-      defaultZone: http://localhost:9090/eureka/ #,http://localhost:8762/eureka/
 
-zuul:
-  routes:
-    test-privider:
-      id: provider
-      serviceId: provider
-      path: /provider/**
-      customSensitiveHeaders: true
+#eureka:
+#  instance:
+#  # 该服务的主机名称
+#  #    hostname: localhost
+#  #    prefer-ip-address: true #http://www.itmuch.com/spring-cloud-code-read/spring-cloud-code-read-eureka-registry-ip/ TODO
+#  client:
+#    healthcheck:
+#      enabled: true
+#    # 服务器端调用健康检查处理器 getStatus() 方法的时间间隔，默认时间间隔 30s
+#    #instanceInfoReplicationIntervalSeconds: 10
+#    serviceUrl:
+#      defaultZone: http://localhost:9090/eureka/ #,http://localhost:8762/eureka/
+#
+#zuul:
+#  routes:
+#    test-privider:
+#      id: provider
+#      serviceId: provider
+#      path: /provider/**
+#      customSensitiveHeaders: true
+#
+#

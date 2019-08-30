@@ -4,8 +4,8 @@ spring:
     name: eureka-server #first-cloud-server
   cloud:
     # 参考 http://localhost:xxxx/eureka-client/dev（格式 /{application}/{profile}）
-    # 拉取 Spring Cloud Config Server 服务的内容（即获取 {config.uri}/{config.name}/{config.profile}）
-#    config:
+    # 拉取 Spring Cloud Config Server 服务的内容（即获取 {zuulconfig.uri}/{zuulconfig.name}/{zuulconfig.profile}）
+#    zuulconfig:
 #      uri: http://localhost:7777  #指定 Spring Cloud Config 配置服务器
 #      label: master               #拉取内容的分支名，默认为 master
 #      profile: dev
