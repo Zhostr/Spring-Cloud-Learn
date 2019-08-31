@@ -15,6 +15,7 @@
         <module>eureka-client-customer</module>
         <module>config-server</module>
         <module>smart-gateway</module>
+        <module>common-starter</module>
     </modules>
 
 
@@ -61,6 +62,11 @@
             <!--<groupId>org.springframework.boot</groupId>-->
             <!--<artifactId>spring-boot-devtools</artifactId>-->
         <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

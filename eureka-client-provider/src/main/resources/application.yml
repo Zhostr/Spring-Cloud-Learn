@@ -1,12 +1,18 @@
-# 多环境通用配置，不能放其他内容？？TODO
 spring:
   application:
     name: provider
-  profiles:
-    active: dev_01
-#  cloud:
-#    zuulconfig:
-#      uri: http://localhost:7777
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/for_learn?characterEncoding=utf-8&useSSL=false
+      username: root
+      password: JrhtNvP2y73AMHzKnwssJNjP45oqwz9lBgvGivkhMHpuyj3obx5pSdCctR2po1+dF3KoXhpCE1H001UNOjbzyA==
+      initial-size: 5 #初始化时，建立物理连接个数
+      max-active: 5
+      min-idle: 5
+      filters: config,stat,slf4j
+      connection-properties: config.decrypt=true;config.decrypt.key=${publickey} #https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
+
+publickey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALIaSVy3V5r1w+LXNz/nwFwXYZq4O+44Cxs7UZnPuihK+/Tp6CHgFizrJuTsijX0xSn/I9vHbsh5h8vD/IZIh2ECAwEAAQ==
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -17,9 +23,6 @@ management:
       exposure:
         include: "*" # 默认值是 true，敏感端口不对外暴露，默认情况下这个只显示服务是否启动（UP），其他 HealthIndicator（discoveryComposite、diskSpace 等） 信息不输出
 
----
-server:
-  port: 8848
 eureka:
   instance:
 #     preferIpAddress: true #http://www.itmuch.com/spring-cloud-code-read/spring-cloud-code-read-eureka-registry-ip/ TODO
@@ -32,31 +35,8 @@ eureka:
 #    instanceInfoReplicationIntervalSeconds: 10
     serviceUrl: #
       defaultZone: http://localhost:9090/eureka/ #,http://localhost:8762/eureka/
-#    enabled: false #不使用 Eureka Server
+    enabled: false #不使用 Eureka Server
 
-spring:
-  profiles: dev_01
-
-person:
-  name: 来自dev_01
-  age: 100
-
-
----
 server:
-  port: 8849
+  port: 8080
 
-eureka:
-  instance:
-    hostname: localhost
-  client:
-    #instanceInfoReplicationIntervalSeconds: 10
-    serviceUrl:
-      defaultZone: http://localhost:9090/eureka/ #,http://localhost:8762/eureka/
-
-spring:
-  profiles: dev_02
-
-person:
-  name: 来自dev_02
-  age: 1000
