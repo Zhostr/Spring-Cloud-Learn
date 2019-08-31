@@ -23,39 +23,30 @@ public class GenericResponse<T> {
     /**
      * 默认成功 code
      */
-    public static final String DEFAULT_SUCCESS_CODE = "0";
+    public static final Integer DEFAULT_SUCCESS_CODE = 200;
 
     /**
      * 默认成功 message
      */
-    public static final String DEFAULT_SUCCESS_MESSAGE = "SUCCESS";
+    public static final String DEFAULT_SUCCESS_MESSAGE = "success";
 
     /**
      * 默认失败 code
      */
-    public static final String DEFAULT_FAILED_CODE = "9999";
+    public static final Integer DEFAULT_FAILED_CODE = 500;
 
     /**
      * 默认失败 message
      */
-    public static final String DEFAULT_FAILED_MESSAGE = "FAILED";
+    public static final String DEFAULT_FAILED_MESSAGE = "failed";
 
     @Builder.Default
-    private String code = DEFAULT_SUCCESS_CODE;
+    private Integer code = DEFAULT_SUCCESS_CODE;
 
     @Builder.Default
     private String message = DEFAULT_SUCCESS_MESSAGE;
 
     private T data;
-
-    /**
-     * 返回成功方法
-     *
-     * @return
-     */
-    public static GenericResponse success() {
-        return success(null);
-    }
 
     /**
      * 返回带数据成功方法
@@ -65,7 +56,7 @@ public class GenericResponse<T> {
      * @return
      */
     public static <T> GenericResponse success(T data) {
-        return success("0", "SUCCESS", data);
+        return success(DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE, data);
     }
 
     /**
@@ -77,19 +68,10 @@ public class GenericResponse<T> {
      * @param <T>
      * @return
      */
-    public static <T> GenericResponse success(String code, String message, T data) {
+    public static <T> GenericResponse success(Integer code, String message, T data) {
         Objects.requireNonNull(code);
         Objects.requireNonNull(message);
         return GenericResponse.<T>builder().code(code).message(message).data(data).build();
-    }
-
-    /**
-     * 默认失败方法
-     *
-     * @return
-     */
-    public static GenericResponse failed() {
-        return failed(DEFAULT_FAILED_CODE, DEFAULT_FAILED_MESSAGE);
     }
 
     /**
@@ -109,7 +91,7 @@ public class GenericResponse<T> {
      * @param message
      * @return
      */
-    public static GenericResponse failed(String code, String message) {
+    public static GenericResponse failed(Integer code, String message) {
         return GenericResponse.builder().code(code).message(message).build();
     }
 

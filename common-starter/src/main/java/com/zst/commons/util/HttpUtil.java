@@ -63,7 +63,6 @@ public class HttpUtil {
      */
     public static String get(String url,Map<String,Object> param){
         return get(url.concat("?").concat(getParameter(param)));
-
     }
 
     /**
@@ -208,7 +207,7 @@ public class HttpUtil {
             return execute(url, closeableHttpClient, request, param);
         }
         catch (Exception e) {
-            log.error("");
+            log.error("something went wrong!", e);
         }
         return "";
     }

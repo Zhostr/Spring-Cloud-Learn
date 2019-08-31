@@ -14,10 +14,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 @SpringBootApplication
 @MapperScan(value = "com.zst.provider.mapper")
-public class EurekaProviderApplication {
+public class EurekaClientApplicationTwo {
 
     public static void main(String[] args) {
-        SpringApplication.run(EurekaProviderApplication.class,args);
+        SpringApplication.run(EurekaClientApplicationTwo.class,args);
     }
 
 }
