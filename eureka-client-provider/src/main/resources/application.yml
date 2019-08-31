@@ -8,9 +8,15 @@ spring:
 #    zuulconfig:
 #      uri: http://localhost:7777
 
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
 management:
-  security:
-    enabled: false # 默认值是 true，敏感端口不对外暴露，默认情况下这个只显示服务是否启动（UP），其他 HealthIndicator（discoveryComposite、diskSpace 等） 信息不输出
+  endpoints:
+    web:
+      exposure:
+        include: "*" # 默认值是 true，敏感端口不对外暴露，默认情况下这个只显示服务是否启动（UP），其他 HealthIndicator（discoveryComposite、diskSpace 等） 信息不输出
+
 ---
 server:
   port: 8848
