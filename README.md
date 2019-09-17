@@ -5,7 +5,7 @@
 
 ### Config Server
 
-> 弃用，待删除
+> 弃用，待删除（替换成 Nacos）
 
 ```yaml
 spring:  
@@ -34,6 +34,8 @@ spring:
 ![](http://my-personal-blog.oss-cn-beijing.aliyuncs.com/18-12-18/43058701.jpg)
 
 ### Config Client
+
+> 弃用，待删除（替换成 Nacos）
 
 ```yaml
 # 多环境通用配置
