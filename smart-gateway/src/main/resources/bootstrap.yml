@@ -4,7 +4,7 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: local-test
+        - id: local-test1 #以 /public/hw/standard/ 开头的请求
           uri: http://localhost:8081
           predicates:
             - Path=/public/hw/standard/**
@@ -12,6 +12,15 @@ spring:
 #            - PreserveHostHeader
             - StripPrefix=1
             - PrefixPath=/service
+        # 以 /server1 开头的请求，且 uri 中带有 api/user/auth，转发的时候要去掉
+        - id: local-test2
+          uri: http://localhost:8081
+          predicates:
+            - Path=/server1/**
+          filters:
+            - StripPrefix=1
+            - RewritePath=/api/user/auth/(?<downsteramURI>.*), /$\{downsteramURI}
+
 
 
 server:

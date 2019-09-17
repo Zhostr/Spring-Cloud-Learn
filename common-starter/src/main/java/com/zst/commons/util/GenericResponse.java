@@ -95,6 +95,17 @@ public class GenericResponse<T> {
         return GenericResponse.builder().code(code).message(message).build();
     }
 
+    /**
+     * 自定义code message失败方法
+     *
+     * @param code
+     * @param message
+     * @return
+     */
+    public static <T> GenericResponse failed(Integer code, String message, T data) {
+        return GenericResponse.builder().code(code).message(message).data(data).build();
+    }
+
     @Override
     @SneakyThrows(JsonProcessingException.class)
     public String toString() {

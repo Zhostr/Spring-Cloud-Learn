@@ -114,3 +114,10 @@ eureka:
 }
 ```
 
+## Hystrix
+
+> Whether or not your command has a fallback, all of the usual Hystrix state and circuit-breaker state/metrics are updated to indicate the command failure.
+
+## TODO
+common-starter：测试包添加 again-java 内容
+config-server：使用阿里 [Nacos](https://nacos.io/zh-cn/)

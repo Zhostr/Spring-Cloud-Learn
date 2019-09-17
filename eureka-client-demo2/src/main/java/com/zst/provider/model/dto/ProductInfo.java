@@ -25,4 +25,10 @@ public class ProductInfo {
 
     private Long price;
 
+    private Long cityId;
+
+    /** 接口返回值是 cityId，查自己的内存，获取 cityName
+     *  @see com.zst.client.controller.ProductController#getProductInfo(java.lang.Long) **/
+    private String cityName;
+
 }

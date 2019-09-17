@@ -31,13 +31,13 @@ import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import static org.apache.http.entity.ContentType.MULTIPART_FORM_DATA;
 
 /**
+ * TODO 添加 HTTP 返回状态码
  * @description: HTTP 请求客户端
  * @author: Zhoust
  * @date: 2019/05/07 16:08
  * @version: V1.0
  */
 @Slf4j
-@SuppressWarnings("all")
 public class HttpUtil {
 
     /** 静态请求配置
@@ -51,7 +51,7 @@ public class HttpUtil {
      * @param url       url 包含参数
      * @return
      */
-    public static String get(String url) {
+    public static String get(String url) throws IOException {
         return send(url, HttpMethod.GET, null, null, null);
     }
 
@@ -61,7 +61,7 @@ public class HttpUtil {
      * @param param
      * @return
      */
-    public static String get(String url,Map<String,Object> param){
+    public static String get(String url,Map<String,Object> param) throws IOException {
         return get(url.concat("?").concat(getParameter(param)));
     }
 
@@ -71,7 +71,7 @@ public class HttpUtil {
      * @param auth
      * @return
      */
-    public static String getWithAuth(String url, String auth) {
+    public static String getWithAuth(String url, String auth) throws IOException {
         Header[] headers = {new BasicHeader("Authorization", auth)};
         return send(url, HttpMethod.GET, null, headers, null);
     }
@@ -82,7 +82,7 @@ public class HttpUtil {
      * @param map
      * @return
      */
-    public static String postForm(String url, Map<String, Object> map) {
+    public static String postForm(String url, Map<String, Object> map) throws IOException {
         return send(url, HttpMethod.POST, map, null, MULTIPART_FORM_DATA);
     }
 
@@ -93,7 +93,7 @@ public class HttpUtil {
      * @param auth
      * @return
      */
-    public static String postFormWithAuth(String url, Map<String, Object> map, String auth) {
+    public static String postFormWithAuth(String url, Map<String, Object> map, String auth) throws IOException {
         Header[] headers = {new BasicHeader("Authorization", auth)};
         return send(url, HttpMethod.GET, map, headers, MULTIPART_FORM_DATA);
     }
@@ -104,7 +104,7 @@ public class HttpUtil {
      * @param jsonObject
      * @return
      */
-    public static String postJson(String url, Object jsonObject) {
+    public static String postJson(String url, Object jsonObject) throws IOException {
         Header[] headers = {new BasicHeader("Content-Type", "application/json")};
         Map<String, Object> params = new HashMap<>(1);
         params.put("json", jsonObject);
@@ -118,7 +118,7 @@ public class HttpUtil {
      * @param headerMap     Header 内容
      * @return
      */
-    public static String postJsonWithHeaders(String url, Object jsonObject, Map<String, String> headerMap) {
+    public static String postJsonWithHeaders(String url, Object jsonObject, Map<String, String> headerMap) throws IOException {
         Header[] headers;
         if (headerMap != null) {
             headers = new Header[headerMap.size() + 1];
@@ -143,7 +143,7 @@ public class HttpUtil {
      * @param jsonObject
      * @return
      */
-    public static String postJsonWithAuth(String url, Object jsonObject, String auth) {
+    public static String postJsonWithAuth(String url, Object jsonObject, String auth) throws IOException {
         Header[] headers = new Header[2];
         headers[0] = new BasicHeader("Content-Type", "application/json");
         headers[1] = new BasicHeader("Authorization", auth);
@@ -161,55 +161,49 @@ public class HttpUtil {
      * @param contentType
      * @return
      */
-    public static String send(final String url, HttpMethod httpMethod, Map<String, Object> params, Header[] headers, ContentType contentType) {
-        try {
-            Assert.notNull(url, "url must not be null!");
-            CloseableHttpClient closeableHttpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
-            HttpRequestBase request = getRequestByHttpMethod(url, httpMethod);
-            String param = null;
+    public static String send(final String url, HttpMethod httpMethod, Map<String, Object> params, Header[] headers, ContentType contentType) throws IOException {
+        Assert.notNull(url, "url must not be null!");
+        CloseableHttpClient closeableHttpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
+        HttpRequestBase request = getRequestByHttpMethod(url, httpMethod);
+        String param = null;
 
-            //设置请求头
-            if (headers != null && headers.length != 0) {
-                request.setHeaders(headers);
+        //设置请求头
+        if (headers != null && headers.length != 0) {
+            request.setHeaders(headers);
+        }
+        //设置请求体
+        if (request instanceof HttpEntityEnclosingRequestBase) {
+            AbstractHttpEntity abstractHttpEntity = null;
+            if (contentType.equals(MULTIPART_FORM_DATA)) {
+                StringBuilder stringBuilder = new StringBuilder();
+                //form 表单提交
+                List<NameValuePair> nameValuePairList = new ArrayList<>(params.size());
+                params.forEach((k,v)->{
+                    nameValuePairList.add(new BasicNameValuePair(k, v.toString()));
+                    stringBuilder.append(k).append("=").append(v.toString()).append(",");
+                });
+                param = stringBuilder.toString().substring(0, stringBuilder.length()-1);
+                abstractHttpEntity = new UrlEncodedFormEntity(nameValuePairList, UTF_8);
             }
-            //设置请求体
-            if (request instanceof HttpEntityEnclosingRequestBase) {
-                AbstractHttpEntity abstractHttpEntity = null;
-                if (contentType.equals(MULTIPART_FORM_DATA)) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    //form 表单提交
-                    List<NameValuePair> nameValuePairList = new ArrayList<>(params.size());
-                    params.forEach((k,v)->{
-                        nameValuePairList.add(new BasicNameValuePair(k, v.toString()));
-                        stringBuilder.append(k).append("=").append(v.toString()).append(",");
-                    });
-                    param = stringBuilder.toString().substring(0, stringBuilder.length()-1);
-                    abstractHttpEntity = new UrlEncodedFormEntity(nameValuePairList, UTF_8);
-                }
-                else if (contentType.equals(APPLICATION_JSON)) {
-                    //json 方式提交
-                    param = JsonUtil.toJson(params.get("json"));
-                    abstractHttpEntity = new StringEntity(param, UTF_8);
-                }
-                ((HttpEntityEnclosingRequestBase) request).setEntity(abstractHttpEntity);
+            else if (contentType.equals(APPLICATION_JSON)) {
+                //json 方式提交
+                param = JsonUtil.toJson(params.get("json"));
+                abstractHttpEntity = new StringEntity(param, UTF_8);
             }
+            ((HttpEntityEnclosingRequestBase) request).setEntity(abstractHttpEntity);
+        }
 
-            //param 为 null，表示是 Get 请求，从 url 中提取参数
-            if (param == null) {
-                int index = url.indexOf("?");
-                if (index != -1) {
-                    param = url.substring(index+1);
-                }
-                else {
-                    param = "";
-                }
+        //param 为 null，表示是 Get 请求，从 url 中提取参数
+        if (param == null) {
+            int index = url.indexOf("?");
+            if (index != -1) {
+                param = url.substring(index+1);
             }
-            return execute(url, closeableHttpClient, request, param);
+            else {
+                param = "";
+            }
         }
-        catch (Exception e) {
-            log.error("something went wrong!", e);
-        }
-        return "";
+        return execute(url, closeableHttpClient, request, param);
     }
 
     /**
@@ -219,43 +213,39 @@ public class HttpUtil {
      * @param param
      * @return
      */
-    private static String execute(String url, CloseableHttpClient closeableHttpClient, HttpRequestBase requestBase, String param) {
+    private static String execute(String url, CloseableHttpClient closeableHttpClient, HttpRequestBase requestBase, String param) throws IOException {
         String result = "";
-        CloseableHttpResponse response = null;
-        try {
-            log.info("Invoke {}, param is {}", url, param);
-            response = closeableHttpClient.execute(requestBase);
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                result = EntityUtils.toString(entity, UTF_8);
-                log.info("response data is {}", result);
-            }
-            StatusLine statusLine = response.getStatusLine();
-            int responseStatusCode = statusLine.getStatusCode();
-            String reasonPhrase = statusLine.getReasonPhrase();
-            if (!isRightResponse(responseStatusCode)) {
-                throw new IllegalArgumentException("Response Code Error! [" + responseStatusCode + " " + reasonPhrase + "]");
-            }
-            EntityUtils.consume(entity);
-        } catch (Exception e) {
-            log.error("Something went wrong!", e);
+        CloseableHttpResponse response;
+        log.info("Invoke {}, param is {}", url, param);
+        response = closeableHttpClient.execute(requestBase);
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            result = EntityUtils.toString(entity, UTF_8);
+            log.info("response data is {}", result);
         }
-        finally {
-            if (response != null) {
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    log.error("Close HttpResponse error!", e);
-                }
-            }
-            if (closeableHttpClient != null) {
-                try {
-                    closeableHttpClient.close();
-                } catch (IOException e) {
-                    log.error("Close CloseableHttpClient error!", e);
-                }
-            }
+        StatusLine statusLine = response.getStatusLine();
+        int responseStatusCode = statusLine.getStatusCode();
+        String reasonPhrase = statusLine.getReasonPhrase();
+        if (!isRightResponse(responseStatusCode)) {
+            throw new IllegalArgumentException("Response Code Error! [" + responseStatusCode + " " + reasonPhrase + "]");
         }
+        EntityUtils.consume(entity);
+//        finally {
+//            if (response != null) {
+//                try {
+//                    response.close();
+//                } catch (IOException e) {
+//                    log.error("Close HttpResponse error!", e);
+//                }
+//            }
+//            if (closeableHttpClient != null) {
+//                try {
+//                    closeableHttpClient.close();
+//                } catch (IOException e) {
+//                    log.error("Close CloseableHttpClient error!", e);
+//                }
+//            }
+//        }
         return result;
     }
 
