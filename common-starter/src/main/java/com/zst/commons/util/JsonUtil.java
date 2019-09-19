@@ -3,6 +3,7 @@ package com.zst.commons.util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,12 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * @description:
+ * @description: JSON 工具类
  * @author: Zhoust
  * @date: 2019/05/07 14:42
  * @version: V1.0
  */
 @Slf4j
+@UtilityClass
 public class JsonUtil {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -135,15 +137,8 @@ public class JsonUtil {
         }
     }
 
-    public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
+    private static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
         return OBJECT_MAPPER.getTypeFactory().constructParametricType(collectionClass, elementClasses);
-    }
-
-
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        String s = JsonUtil.toJson(list);
-        System.out.println(s);
     }
 
 }

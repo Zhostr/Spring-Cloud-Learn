@@ -24,6 +24,10 @@
         <spring-boot-version>2.1.5.RELEASE</spring-boot-version>
         <spring-cloud-version>Greenwich.SR3</spring-cloud-version>
         <junit.jupiter.version>5.4.1</junit.jupiter.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <encoding>UTF-8</encoding>
     </properties>
 
     <parent>
