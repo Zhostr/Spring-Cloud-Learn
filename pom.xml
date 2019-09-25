@@ -77,12 +77,12 @@
     </dependencies>
 
     <!-- 添加构建 Spring Boot 的插件，解决使用 java -jar xx.jar 方式启动时 ".jar中没有主清单属性" -->
-    <build>
+    <!--<build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--不行就加上下面这个-->
+                &lt;!&ndash;不行就加上下面这个&ndash;&gt;
                 <executions>
                     <execution>
                         <goals>
@@ -92,7 +92,7 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 
 </project>

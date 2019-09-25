@@ -1,6 +1,7 @@
 # Spring-Cloud-Learn
 学习 Spring Cloud 搭的架子，在 README.md 文件和 commit 日志中做一些笔记。
 
+推荐一些在线查看代码的 google 插件：TODO
 ## Spring Cloud Config
 
 ### Config Server

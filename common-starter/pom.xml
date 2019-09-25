@@ -12,7 +12,7 @@
     <name>common-starter</name>
     <version>0.0.1-SNAPSHOT</version>
 
-    <description>Demo project for Spring Boot</description>
+    <description>Demo project for Spring Boot Starter</description>
 
     <dependencies>
 

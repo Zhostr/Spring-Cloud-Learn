@@ -1,8 +1,6 @@
 package com.zst.provider.hystrix;
 
-import com.netflix.hystrix.HystrixCommand;
-import com.netflix.hystrix.HystrixCommandGroupKey;
-import com.netflix.hystrix.HystrixCommandProperties;
+import com.netflix.hystrix.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.hystrix.HystrixProperties;
 
@@ -20,19 +18,20 @@ public class SemaphoreHystrixCommand extends HystrixCommand<String> {
     public SemaphoreHystrixCommand(Long cityId) {
         //设置信号量隔离策略
         super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("SemaphoreHystrixCommandGroup"))
-                    .andCommandPropertiesDefaults(HystrixCommandProperties.Setter().withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE))
+                    .andCommandPropertiesDefaults(HystrixCommandProperties.Setter().withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE)
+                                                                                   .withExecutionIsolationSemaphoreMaxConcurrentRequests(2)
+                    )
         );
         this.cityId = cityId;
     }
 
     @Override
     protected String run() throws Exception {
-        //默认十个线程
         log.info("SemaphoreHystrixCommand run() 方法执行 cityId = {}", cityId);
-        if (System.currentTimeMillis() % 2 == 0) {
-            //模拟 run() 方法抛异常
-            throw new RuntimeException("123123");
-        }
+//        if (System.currentTimeMillis() % 2 == 0) {
+//            //模拟 run() 方法抛异常
+//            throw new RuntimeException("123123");
+//        }
         //需要信号量隔离的代码
         return LocalCache.getCityName(cityId);
     }
@@ -46,6 +45,6 @@ public class SemaphoreHystrixCommand extends HystrixCommand<String> {
         Throwable failedExecutionException = getFailedExecutionException();
         //异常堆栈打印不出来是因为这个 failedExecutionException 是 null
         log.error("LocalCache#getCityName() 方法触发降级", failedExecutionException);
-        return "";
+        return "默认城市";
     }
 }

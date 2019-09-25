@@ -31,7 +31,7 @@ import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import static org.apache.http.entity.ContentType.MULTIPART_FORM_DATA;
 
 /**
- * TODO 添加 HTTP 返回状态码
+ * TODO 添加 HTTP 返回状态码、封装异常
  * @description: HTTP 请求客户端
  * @author: Zhoust
  * @date: 2019/05/07 16:08
@@ -41,10 +41,15 @@ import static org.apache.http.entity.ContentType.MULTIPART_FORM_DATA;
 public class HttpUtil {
 
     /** 静态请求配置
-     *  TODO 修改
+     *  TODO 修改线程池
      * **/
-    private static RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(1000)
-            .setSocketTimeout(1000).setConnectTimeout(1000).build();
+    private static RequestConfig REQUEST_CONFIG = RequestConfig.custom().setConnectionRequestTimeout(10000)
+                                                                        .setSocketTimeout(10000)
+                                                                        .setConnectTimeout(10000)
+                                                                        .build();
+
+    private static CloseableHttpClient CLOSEABLE_HTTP_CLIENT = HttpClients.createDefault();//HttpClients.custom().setDefaultRequestConfig(REQUEST_CONFIG).build();
+
 
     /**
      * get 请求
@@ -163,7 +168,6 @@ public class HttpUtil {
      */
     public static String send(final String url, HttpMethod httpMethod, Map<String, Object> params, Header[] headers, ContentType contentType) throws IOException {
         Assert.notNull(url, "url must not be null!");
-        CloseableHttpClient closeableHttpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
         HttpRequestBase request = getRequestByHttpMethod(url, httpMethod);
         String param = null;
 
@@ -203,21 +207,20 @@ public class HttpUtil {
                 param = "";
             }
         }
-        return execute(url, closeableHttpClient, request, param);
+        return execute(url, request, param);
     }
 
     /**
      * 执行请求、打印、返回响应内容并释放资源
-     * @param closeableHttpClient
      * @param requestBase
      * @param param
      * @return
      */
-    private static String execute(String url, CloseableHttpClient closeableHttpClient, HttpRequestBase requestBase, String param) throws IOException {
+    private static String execute(String url, HttpRequestBase requestBase, String param) throws IOException {
         String result = "";
         CloseableHttpResponse response;
         log.info("Invoke {}, param is {}", url, param);
-        response = closeableHttpClient.execute(requestBase);
+        response = CLOSEABLE_HTTP_CLIENT.execute(requestBase);
         HttpEntity entity = response.getEntity();
         if (entity != null) {
             result = EntityUtils.toString(entity, UTF_8);
