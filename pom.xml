@@ -11,9 +11,7 @@
 
     <modules>
         <module>eureka-server</module>
-        <module>eureka-client-demo1</module>
-        <module>eureka-client-demo2</module>
-        <module>config-server</module>
+        <module>eureka-client</module>
         <module>smart-gateway</module>
         <module>common-starter</module>
     </modules>
@@ -74,25 +72,11 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-gson</artifactId>
+        </dependency>
+
     </dependencies>
-
-    <!-- 添加构建 Spring Boot 的插件，解决使用 java -jar xx.jar 方式启动时 ".jar中没有主清单属性" -->
-    <!--<build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                &lt;!&ndash;不行就加上下面这个&ndash;&gt;
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>-->
-
 
 </project>

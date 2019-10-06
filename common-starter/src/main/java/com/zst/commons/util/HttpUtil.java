@@ -48,7 +48,7 @@ public class HttpUtil {
                                                                         .setConnectTimeout(10000)
                                                                         .build();
 
-    private static CloseableHttpClient CLOSEABLE_HTTP_CLIENT = HttpClients.createDefault();//HttpClients.custom().setDefaultRequestConfig(REQUEST_CONFIG).build();
+    private static CloseableHttpClient CLOSEABLE_HTTP_CLIENT = HttpClients.custom().setDefaultRequestConfig(REQUEST_CONFIG).build();
 
 
     /**
