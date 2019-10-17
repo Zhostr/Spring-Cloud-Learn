@@ -23,15 +23,15 @@ spring:
             - StripPrefix=1
             - RewritePath=/api/user/auth/(?<downsteramURI>.*), /$\{downsteramURI}
 
-        # StripPrefix 可以有多个
+        # StripPrefix 可以有多个，对应 Java DSL 格式在 com.zst.gateway.SmartGateway.routes
         # 如：请求到网关的路径是 /server2/api/user/auth/getProductInfo，下游接口路径是 /getProductInfo
-        - id: local-test-multiStripPrefix
-          uri: http://localhost:8081
-          predicates:
-            - Path=/server2/**
-          filters:
-            - StripPrefix=1
-            - StripPrefix=3
+#        - id: local-test-multiStripPrefix
+#          uri: http://localhost:8081
+#          predicates:
+#            - Path=/server2/**
+#          filters:
+#            - StripPrefix=1
+#            - StripPrefix=3
 
 
 
