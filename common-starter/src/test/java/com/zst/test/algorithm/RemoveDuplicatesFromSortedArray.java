@@ -14,11 +14,9 @@ public class RemoveDuplicatesFromSortedArray {
         int afterIndex = 1;
         int length = nums.length;//
         while(afterIndex < length) {
-            while(afterIndex < length && nums[afterIndex] == nums[preIndex]) {
+            if(nums[afterIndex] == nums[preIndex]) {
                 afterIndex++;
-            }
-            if(afterIndex > length -1) {
-                break;
+                continue;
             }
             nums[++preIndex] = nums[afterIndex];
         }
