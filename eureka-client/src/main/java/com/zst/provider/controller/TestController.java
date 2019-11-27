@@ -1,13 +1,17 @@
 package com.zst.provider.controller;
 
+import com.google.common.collect.Maps;
 import com.zst.commons.util.GenericResponse;
 import com.zst.commons.util.JsonUtil;
+import com.zst.provider.entity.Person;
 import com.zst.provider.model.dto.ProductInfo;
+import com.zst.provider.util.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,10 +27,10 @@ public class TestController {
     /**
      * 模拟 Get 接口
      * @see com.zst.provider.controller.CacheController#changeProduct(java.lang.Long)
-     * @param productId
-     * @return
+     * @param productId 商品 id
+     * @return 商品详情
      */
-    @GetMapping("getProductInfo")
+    @GetMapping("/getProductInfo")
     public GenericResponse<ProductInfo> getProductInfo(@RequestParam("productId") Long productId, HttpServletRequest httpServletRequest) {
         Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
         while (headerNames.hasMoreElements()) {
@@ -43,7 +47,7 @@ public class TestController {
      * @param product
      * @return
      */
-    @PostMapping("postProductInfo")
+    @PostMapping("/postProductInfo")
     public GenericResponse<ProductInfo> mockPost(@RequestBody ProductInfo product) {
         product.setName("测试名称");
         product.setPrice(9999L);
@@ -60,6 +64,131 @@ public class TestController {
     public GenericResponse<String> testGatewayPathRewrite(HttpServletRequest httpServletRequest) {
         log.info("uri is [{}]", httpServletRequest.getRequestURI());
         return GenericResponse.success(httpServletRequest.getRequestURL().toString());
+    }
+
+    //---------- 异常处理 ----------
+    /**
+     * 测试缺少 userId 会产生的异常情况
+     * @param userId
+     * @return
+     */
+    @GetMapping("/query")
+    public String query(@RequestParam("userId") String userId) {
+        return "userId = " + userId;
+    }
+
+    //---------- 测试 HttpUtil 工具类性能 ----------
+
+    private static String httpBinGetUrl = "http://httpbin.org/get";
+
+    private static String httpBinPostUrl = "http://httpbin.org/post";
+
+    private static Map<String, Object> paramMap = Maps.newHashMap();
+
+    private static Map<String, String> headerMap = Maps.newHashMap();
+
+    private static Person person = Person.builder().id(1000).age(24).msg("msg").name("zst").build();
+
+    static {
+        paramMap.put("name", "zst");
+        paramMap.put("age", 24);
+        headerMap.put("auth", "authdjsakldjaskldjklsa");
+    }
+
+    @GetMapping("/test/onlyGet")
+    public Boolean testGetUrl() {
+        try {
+            log.info("onlyGet");
+            HttpUtils.get(httpBinGetUrl + "?name=zst&age=24");
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("something went wrong! msg = {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    @GetMapping("/test/getWithParamMap")
+    public Boolean testGetParamMap() {
+        try {
+            log.info("getWithParamMap");
+            HttpUtils.get(httpBinGetUrl, paramMap);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("something went wrong! msg = {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    @GetMapping("/test/getWithAuth")
+    public Boolean testGetWithAuth() {
+        try {
+            log.info("getWithAuth");
+            HttpUtils.getWithAuth(httpBinGetUrl + "?name=zst&age=24", "auth is auth");
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("something went wrong! msg = {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    @GetMapping("/test/postForm")
+    public Boolean testPostForm() {
+        try {
+            log.info("postForm");
+            HttpUtils.postForm(httpBinPostUrl, paramMap);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("something went wrong! msg = {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    @GetMapping("/test/postFormWithAuth")
+    public Boolean postFormWithAuth() {
+        try {
+            log.info("postFormWithAuth");
+            HttpUtils.postFormWithAuth(httpBinPostUrl, paramMap, "auth is auth");
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("something went wrong! msg = {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    @GetMapping("/test/postJson")
+    public Boolean postJson() {
+        try {
+            log.info("postJson");
+            HttpUtils.postJson(httpBinPostUrl, person);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("something went wrong! msg = {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    @GetMapping("/test/postJsonWithHeaders")
+    public Boolean postJsonWithHeaders() {
+        try {
+            log.info("postJsonWithHeaders");
+            HttpUtils.postJsonWithHeaders(httpBinPostUrl, person, headerMap);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("something went wrong! msg = {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
+    }
+
+    @GetMapping("/test/postJsonWithAuth")
+    public Boolean postJsonWithAuth() {
+        try {
+            log.info("postJsonWithAuth");
+            HttpUtils.postJsonWithAuth(httpBinPostUrl, person, "auth is auth");
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            log.error("something went wrong! msg = {}", e.getMessage(), e);
+            return Boolean.FALSE;
+        }
     }
 
 }
