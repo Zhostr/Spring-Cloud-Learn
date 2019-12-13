@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -45,6 +47,9 @@ public class GenericResponse<T> {
 
     @Builder.Default
     private String message = DEFAULT_SUCCESS_MESSAGE;
+
+    /** 非法参数名称，如果是参数错误，会以参数名作为 key；如果是其他错误，会以 ERROR_MSG 作为 key **/
+    private Map<String, String> error;
 
     private T data;
 
@@ -104,6 +109,23 @@ public class GenericResponse<T> {
      */
     public static <T> GenericResponse failed(Integer code, String message, T data) {
         return GenericResponse.builder().code(code).message(message).data(data).build();
+    }
+
+    public GenericResponse<T> addErrorMessage(String paramName, String message) {
+        this.code = DEFAULT_FAILED_CODE;
+        if (null == paramName || null == message) {
+            return this;
+        }
+        if (null == this.error) {
+            this.error = new HashMap<>(16);
+        }
+        if (this.error.containsKey(paramName)) {
+            String tmp = this.error.get(paramName);
+            this.error.put(paramName, tmp + ";" + message);
+        } else {
+            this.error.put(paramName, message);
+        }
+        return this;
     }
 
     @Override
