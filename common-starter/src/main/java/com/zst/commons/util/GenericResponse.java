@@ -131,6 +131,6 @@ public class GenericResponse<T> {
     @Override
     @SneakyThrows(JsonProcessingException.class)
     public String toString() {
-        return new ObjectMapper().writeValueAsString(this);
+        return JsonUtil.OBJECT_MAPPER.writeValueAsString(this);
     }
 }

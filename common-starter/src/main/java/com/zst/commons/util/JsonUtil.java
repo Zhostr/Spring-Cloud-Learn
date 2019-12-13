@@ -24,7 +24,7 @@ public class JsonUtil {
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String TO_OBJECT_ERROR = "Json to object error!";
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
         //反序列化时忽略 json 中存在但实体类中不存在的属性

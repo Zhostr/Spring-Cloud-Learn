@@ -217,15 +217,16 @@ public class HttpUtil {
      * @return
      */
     private static String execute(String url, HttpRequestBase requestBase, String param) throws IOException {
-        String result = "";
+        String result;
         CloseableHttpResponse response;
         log.info("Invoke {}, param is {}", url, param);
         response = CLOSEABLE_HTTP_CLIENT.execute(requestBase);
         HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            result = EntityUtils.toString(entity, UTF_8);
-            log.info("response data is {}", result);
+        if (entity == null) {
+            log.error("response data is empty");
+            return null;
         }
+        result = EntityUtils.toString(entity, UTF_8);
         StatusLine statusLine = response.getStatusLine();
         int responseStatusCode = statusLine.getStatusCode();
         String reasonPhrase = statusLine.getReasonPhrase();
@@ -233,22 +234,6 @@ public class HttpUtil {
             throw new IllegalArgumentException("Response Code Error! [" + responseStatusCode + " " + reasonPhrase + "]");
         }
         EntityUtils.consume(entity);
-//        finally {
-//            if (response != null) {
-//                try {
-//                    response.close();
-//                } catch (IOException e) {
-//                    log.error("Close HttpResponse error!", e);
-//                }
-//            }
-//            if (closeableHttpClient != null) {
-//                try {
-//                    closeableHttpClient.close();
-//                } catch (IOException e) {
-//                    log.error("Close CloseableHttpClient error!", e);
-//                }
-//            }
-//        }
         return result;
     }
 
@@ -262,7 +247,6 @@ public class HttpUtil {
         int firstNumber = responseCode/100;
         switch (firstNumber) {
             case 2:
-                return true;
             case 3:
                 return true;
             default:
@@ -281,7 +265,6 @@ public class HttpUtil {
             case GET:
                 return new HttpGet(url);
             case POST:
-                return new HttpPost(url);
             default:
                 return new HttpPost(url);
         }
