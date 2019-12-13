@@ -29,6 +29,7 @@ public class Application {
     public void init() {
         String property = environment.getProperty("spring.datasource.druid.username");
         log.info("'spring.datasource.druid.username' is {}", property);
+        log.info("management.endpoints.web.exposure.include is {}", environment.getProperty("management.endpoints.web.exposure.include"));
     }
 
     public static void main(String[] args) {

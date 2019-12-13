@@ -39,7 +39,7 @@ eureka:
     enabled: false #不使用 Eureka Server
 
 server:
-  port: 8081
+  port: 8080
 
 logging:
   level:

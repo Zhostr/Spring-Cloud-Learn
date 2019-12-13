@@ -1,8 +1,11 @@
 spring:
   application:
     name: Smart-Gateway
+
   cloud:
     gateway:
+      metrics:
+        enabled: true #默认就是 true，得引入
       routes:
         - id: local-test1 #以 /public/hw/standard/ 开头的请求
           uri: http://localhost:8081
@@ -20,6 +23,7 @@ spring:
           predicates:
             - Path=/server1/**
           filters:
+            - CustomGatewayFilterFactory
             - StripPrefix=1
             - RewritePath=/api/user/auth/(?<downsteramURI>.*), /$\{downsteramURI}
 
@@ -32,10 +36,6 @@ spring:
 #          filters:
 #            - StripPrefix=1
 #            - StripPrefix=3
-
-
-
-
 
 server:
   port: 8080

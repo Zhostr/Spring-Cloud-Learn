@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -68,13 +69,14 @@ public class TestController {
 
     //---------- 异常处理 ----------
     /**
-     * 测试缺少 userId 会产生的异常情况
-     * @param userId
+     * 测试全局异常和 Controller 内部的 ExceptionHandler
+     * @see MockHealth#query(java.lang.String)
+     * @param num
      * @return
      */
-    @GetMapping("/query")
-    public String query(@RequestParam("userId") String userId) {
-        return "userId = " + userId;
+    @GetMapping("/divide-zero")
+    public GenericResponse<Integer> divide(Integer num) {
+        return GenericResponse.success(num/0);
     }
 
     //---------- 测试 HttpUtil 工具类性能 ----------

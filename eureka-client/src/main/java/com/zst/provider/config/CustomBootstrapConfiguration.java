@@ -43,6 +43,7 @@ public class CustomBootstrapConfiguration implements ApplicationContextInitializ
         specifiedPropertyMap.put("spring.datasource.druid.min-idle", 5);
         specifiedPropertyMap.put("spring.datasource.druid.max-active", 50);
         specifiedPropertyMap.put("spring.datasource.druid.filters", "config,stat,slf4j");
+        specifiedPropertyMap.put("management.endpoints.web.exposure.include", "'*'");
         return new MapPropertySource("druidDatasource", specifiedPropertyMap);
     }
 

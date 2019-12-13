@@ -30,6 +30,7 @@ public class SmartGateway {
     }
 
     /**
+     * 网关配置 Java Config 方式
      * https://www.baeldung.com/spring-cloud-gateway
      * @see StripPrefixGatewayFilterFactory#apply(StripPrefixGatewayFilterFactory.Config) newPath 这一行
      * @param routeLocatorBuilder

@@ -53,6 +53,8 @@
             <groupId>com.zst</groupId>
             <artifactId>common-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <!-- 默认就是 compile -->
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -79,6 +81,21 @@
             <artifactId>junit-platform-launcher</artifactId>
             <version>1.3.1</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- TODO 放到 common-starter 中 -->
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.3</version>
         </dependency>
 
     </dependencies>

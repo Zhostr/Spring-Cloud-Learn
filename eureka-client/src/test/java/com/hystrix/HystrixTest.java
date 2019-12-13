@@ -41,7 +41,7 @@ class HystrixTest {
 
         sleep(6);
 
-        //10s 的时间窗口未到，即使下面的这些异常请求占比已经超过 ERROR 阈值 40% 了，断路器仍旧处于 close 状态
+        //10s 的时间窗口未到（metrics.rollingStats.timeInMilliseconds），即使下面的这些异常请求占比已经超过 ERROR 阈值 50% 了，断路器仍旧处于 close 状态
         for (int i = 0; i < 20; i++) {
             //异常请求
             request(true);
@@ -49,7 +49,7 @@ class HystrixTest {
 
         sleep(4);
 
-        //断路器状态从 close 转化为 open 后，在 circuitBreakerSleepWindowInMilliseconds ms 内请求直接被断路，所有请求无论正常/异常，统统直接 Fallback 降级（本例中设置的是 3s）
+        //断路器状态从 close 转化为 open 后，在 circuitBreaker.sleepWindowInMilliseconds ms 内请求直接被断路，所有请求无论正常/异常，统统直接 Fallback 降级（本例中设置的是 3s）
         for (int i = 0; i < 50; i++) {
             if (i % 2 == 0) {
                 request(false);

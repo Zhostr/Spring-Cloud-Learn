@@ -22,7 +22,7 @@ public class ApplicationConfiguration {
      * @see HystrixRequestContextFilter
      * @return
      */
-    @Bean
+    //@Bean
     public FilterRegistrationBean addHystrixRequestContextFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new HystrixRequestContextFilter());
