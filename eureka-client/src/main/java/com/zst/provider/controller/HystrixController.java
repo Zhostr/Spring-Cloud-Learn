@@ -9,9 +9,11 @@ import com.zst.commons.util.JsonUtil;
 import com.zst.provider._native.hystrix.ProductInfoCommand;
 import com.zst.provider._native.hystrix.ProductInfosCommand;
 import com.zst.provider._native.hystrix.SemaphoreHystrixCommand;
+import com.zst.provider.cloud.ProductInfoHystrixClient;
 import com.zst.provider.model.dto.ProductInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -149,4 +151,18 @@ public class HystrixController {
         return GenericResponse.success(productInfoList);
     }
 
+
+    //------------------- Spring Cloud Hystrix -------------------
+
+    @Autowired
+    private ProductInfoHystrixClient productInfoApi;
+
+    /**
+     * @param productId
+     * @return
+     */
+    @GetMapping("/cloudSingleProduct")
+    public GenericResponse<ProductInfo> hystrixSingleProduct(@RequestParam("productId") Long productId) {
+       return productInfoApi.getProductInfoById(productId);
+    }
 }

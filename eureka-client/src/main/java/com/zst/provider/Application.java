@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,7 @@ import javax.annotation.PostConstruct;
  * @version: V1.0
  */
 @Slf4j
+@EnableHystrix
 @EnableEurekaClient
 @SpringBootApplication
 @MapperScan(value = "com.zst.provider.mapper")
