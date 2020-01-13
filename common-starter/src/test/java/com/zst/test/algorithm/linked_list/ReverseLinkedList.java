@@ -22,6 +22,7 @@ public class ReverseLinkedList {
             pre = index;
             index = next;
         }
+        //注意这个返回
         return pre;
     }
 
