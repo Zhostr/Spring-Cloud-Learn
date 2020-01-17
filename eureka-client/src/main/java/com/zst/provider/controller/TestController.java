@@ -37,9 +37,9 @@ public class TestController {
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
             String headerValue = httpServletRequest.getHeader(headerName);
-            log.info("header {} = {}", headerName, headerValue);
+//            log.info("header {} = {}", headerName, headerValue);
         }
-        log.info("getProductInfo 接口，入参是 productId= {}", productId);
+//        log.info("getProductInfo 接口，入参是 productId= {}", productId);
         return GenericResponse.success(ProductInfo.builder().id(productId).description("黑色苹果7").price(5300L).name("iphone 7").cityId(1L).build());
     }
 

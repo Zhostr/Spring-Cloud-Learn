@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @description: 使用 HystrixCommand 获取单条商品信息，Request Cache demo
@@ -51,8 +52,9 @@ public class ProductInfoCommand extends HystrixCommand<GenericResponse<ProductIn
                                                     .withMetricsRollingStatisticalWindowInMilliseconds(10000)//统计的单位时间窗口（默认 10s）
                                                     .withCircuitBreakerRequestVolumeThreshold(20)//默认 10s 内，至少有 20 个请求经过断路器，才可能会触发断路
                                                     .withCircuitBreakerErrorThresholdPercentage(50)//在一定时间内异常比例超过该值时，触发断路（默认 50%）
-                                                    .withCircuitBreakerSleepWindowInMilliseconds(3000)//断路器状态从 close 转化为 open 后，在 circuitBreakerSleepWindowInMilliseconds ms 内请求直接被断路，走 Fallback 降级（默认为 5s）
-                                                    .withExecutionTimeoutInMilliseconds(20000)//默认 1s 超时，测试 Thread Reject 时设置长一点，com.netflix.hystrix.HystrixCommandProperties.default_executionTimeoutInMilliseconds
+                                                    .withCircuitBreakerSleepWindowInMilliseconds(5000)//断路器状态从 close 转化为 open 后，在 circuitBreakerSleepWindowInMilliseconds ms 内请求直接被断路，走 Fallback 降级（默认为 5s）
+                                                    .withMetricsHealthSnapshotIntervalInMilliseconds(500)//default to 500ms as max frequency between allowing snapshots of health (error percentage etc) com.netflix.hystrix.metric.consumer.HealthCountsStream.getInstance(com.netflix.hystrix.HystrixCommandKey, com.netflix.hystrix.HystrixCommandProperties)
+                                                    //.withExecutionTimeoutInMilliseconds(180)//默认 1s 超时，测试 Thread Reject 时设置长一点，com.netflix.hystrix.HystrixCommandProperties.default_executionTimeoutInMilliseconds
 //                                                    .withFallbackIsolationSemaphoreMaxConcurrentRequests(30)//TODO
                     )
         );
@@ -61,15 +63,17 @@ public class ProductInfoCommand extends HystrixCommand<GenericResponse<ProductIn
 
     @Override
     protected GenericResponse<ProductInfo> run() throws Exception {
+        log.info("进入 command 方法");
         //断路测试（参数为 -1 抛异常）
         if (productId == -1) {
-            throw new RuntimeException("productId 异常");
+            throw new RuntimeException("");
+            //TimeUnit.MILLISECONDS.sleep(200);
         }
 
         GenericResponse<ProductInfo> result;
         Map<String, Object> params = new HashMap<>(1);
         params.put("productId", productId);
-        String resultStr = HttpUtil.get("http://localhost:8080/getProductInfo", params);
+        String resultStr = HttpUtil.get("http://localhost:8081/getProductInfo", params);
         //模拟接口超时降级（去掉 withExecutionTimeoutInMilliseconds），以及 Thread 拒绝策略
 //        TimeUnit.SECONDS.sleep(3L);
 
@@ -78,6 +82,7 @@ public class ProductInfoCommand extends HystrixCommand<GenericResponse<ProductIn
             result = JsonUtil.fromJson(resultStr, new TypeReference<GenericResponse<ProductInfo>>() {});
             return result;
         }
+        log.info("command 方法执行完成");
         return GenericResponse.failed("调用接口失败！");
     }
 

@@ -12,8 +12,9 @@
     <modules>
         <module>eureka-server</module>
         <module>eureka-client</module>
-        <module>smart-gateway</module>
+        <module>spring-cloud-gateway</module>
         <module>common-starter</module>
+        <module>zuul-gateway</module>
     </modules>
 
 
