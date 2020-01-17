@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>smart-gateway</artifactId>
-    <name>smart-gateway</name>
+    <artifactId>spring-cloud-gateway</artifactId>
+    <name>spring-cloud-gateway</name>
 
     <properties>
         <junit.jupiter.version>5.4.1</junit.jupiter.version>
@@ -18,11 +18,6 @@
 
 
     <dependencies>
-
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-zuul</artifactId>-->
-        <!--</dependency>-->
 
         <!--<dependency>-->
             <!--<groupId>org.springframework.cloud</groupId>-->
@@ -74,7 +69,7 @@
     </dependencies>
 
     <build>
-        <finalName>smart-gateway</finalName>
+        <finalName>spring-cloud-gateway</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
