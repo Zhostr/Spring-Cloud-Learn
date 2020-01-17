@@ -1,6 +1,7 @@
-package com.zst.test.reactor_and_java8;
+package com.zst.test.reactor;
 
 import com.google.common.collect.Lists;
+import com.zst.test.java8.StreamAndGuava;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -9,7 +10,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * @see Java8Test
+ * @see StreamAndGuava
  * @description:
  * @author: Zhoust
  * @date: 2019/10/30 下午4:27

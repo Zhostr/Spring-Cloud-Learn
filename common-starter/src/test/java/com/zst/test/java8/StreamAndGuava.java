@@ -1,4 +1,4 @@
-package com.zst.test.reactor_and_java8;
+package com.zst.test.java8;
 
 import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * @version: V1.0
  */
 @Slf4j
-class Java8Test {
+public class StreamAndGuava {
 
     @Test
     @DisplayName("IntStream 测试")
@@ -25,8 +25,15 @@ class Java8Test {
         //从 0 开始，以步长为 1，生成 1000 个数
         IntStream range = IntStream.range(0, 1000);
         List<Integer> collect = range.boxed().collect(Collectors.toList());
-        collect.forEach(System.out::println);
-
+        collect.forEach(i -> {
+            if (i < 500) {
+                //跳过小于 500 的情况，不是跳出整个循环
+                return;
+            }
+            else {
+                System.out.println(i);
+            }
+        });
     }
 
     @Test
