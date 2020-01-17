@@ -2,20 +2,15 @@
 spring:
   application:
     name: eureka-server #first-cloud-server
-  cloud:
-    # 参考 http://localhost:xxxx/eureka-client/dev（格式 /{application}/{profile}）
-    # 拉取 Spring Cloud Config Server 服务的内容（即获取 {zuulconfig.uri}/{zuulconfig.name}/{zuulconfig.profile}）
-#    zuulconfig:
-#      uri: http://localhost:7777  #指定 Spring Cloud Config 配置服务器
-#      label: master               #拉取内容的分支名，默认为 master
-#      profile: dev
-#      name: eureka-client         #如果要是不配置的话，会使用 ${spring.application.name}，观察控制台输出「Located environment」
   profiles:
     active: ${profiles.active:dev}  #指定生效的配置，可以通过  java -Dprofiles.active=dev -Dport=9999 -jar xx.jar
 
 management:
-  security:
-    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*" # 默认值是 true，敏感端口不对外暴露，默认情况下这个只显示服务是否启动（UP），其他 HealthIndicator（discoveryComposite、diskSpace 等） 信息不输出
+
 
 ---
 server:
