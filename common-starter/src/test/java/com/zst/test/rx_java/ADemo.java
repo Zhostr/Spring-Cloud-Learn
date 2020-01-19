@@ -1,10 +1,11 @@
 package com.zst.test.rx_java;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
+
 
 /**
  * @description:
@@ -17,34 +18,36 @@ public class ADemo {
 
     @Test
     void justTest() {
-        Observable<String> sender = Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                subscriber.onNext("Hello RxJava");
-                subscriber.onNext("Hello Again");
-                subscriber.onCompleted();//发射完成需要手动调用这个方法，才会触发观察者的 onCompleted() 方法
-            }
+        Observable<String> observable = Observable.create(producer -> {
+            producer.onNext("产生数据" + Math.random() * 100);
+            producer.onComplete();
         });
 
-        Observer<String> receiver = new Observer<String>() {
+        observable.subscribe(new Observer<String>() {
             @Override
-            public void onCompleted() {
-                log.info("数据接收完成");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
+            public void onSubscribe(Disposable d) {
+                log.info("subscribe 事件发生");
             }
 
             @Override
             public void onNext(String s) {
-                //正常接收到数据时调用
-                log.info("接收到字符串是 {}", s);
+                log.info("接收到数据 {}", s);
+                //int x = 3/0;
             }
-        };
 
-        sender.subscribe(receiver);
+            @Override
+            public void onError(Throwable e) {
+                log.error("产生异常", e);
+            }
+
+            @Override
+            public void onComplete() {
+                log.info("消费完成");
+            }
+        });
+
+
+
     }
 
 
