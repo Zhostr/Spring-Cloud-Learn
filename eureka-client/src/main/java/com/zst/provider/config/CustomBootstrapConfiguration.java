@@ -36,14 +36,10 @@ public class CustomBootstrapConfiguration implements ApplicationContextInitializ
      */
     private PropertySource<?> specifiedHighestPrecedenceProperties() {
         Map<String, Object> specifiedPropertyMap = Maps.newHashMap();
-        specifiedPropertyMap.put("spring.datasource.druid.username", "root");
-        specifiedPropertyMap.put("spring.datasource.druid.url", "jdbc:mysql://localhost:3306/for_learn?characterEncoding=utf-8&useSSL=false");
-        specifiedPropertyMap.put("spring.datasource.druid.password", "JrhtNvP2y73AMHzKnwssJNjP45oqwz9lBgvGivkhMHpuyj3obx5pSdCctR2po1+dF3KoXhpCE1H001UNOjbzyA==");
         specifiedPropertyMap.put("spring.datasource.druid.initial-size", 5);
         specifiedPropertyMap.put("spring.datasource.druid.min-idle", 5);
         specifiedPropertyMap.put("spring.datasource.druid.max-active", 50);
         specifiedPropertyMap.put("spring.datasource.druid.filters", "config,stat,slf4j");
-        specifiedPropertyMap.put("management.endpoints.web.exposure.include", "'*'");
         return new MapPropertySource("druidDatasource", specifiedPropertyMap);
     }
 
