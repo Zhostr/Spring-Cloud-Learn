@@ -9,6 +9,30 @@ package com.zst.test.algorithm.linked_list;
 public class ReverseLinkedList {
 
     /**
+     * 反转相邻节点（https://leetcode.com/problems/swap-nodes-in-pairs/）
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs(ListNode head) {
+        ListNode pre = new ListNode(-1);
+        pre.next = head;
+        ListNode x = pre;
+
+        while(pre.next != null && pre.next.next != null) {
+            ListNode index = pre.next;
+            ListNode next = index.next;
+
+            pre.next = next;
+            index.next = next.next;
+            next.next = index;
+
+            pre = index;
+        }
+        return x.next;
+    }
+
+
+    /**
      * 反转单项链表（https://leetcode.com/problems/reverse-linked-list/submissions/）
      * @param head
      * @return
@@ -16,7 +40,7 @@ public class ReverseLinkedList {
     public ListNode reverseList(ListNode head) {
         ListNode pre = null;
         ListNode index = head;
-        while (index != null) {
+        while (index != null) {//注意这个条件，不是 index.next
             ListNode next = index.next;
             index.next = pre;
             pre = index;

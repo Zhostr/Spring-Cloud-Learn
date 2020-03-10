@@ -3,6 +3,7 @@ package com.zst.test.concurrent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -63,13 +64,14 @@ public class DeadlockDemo {
     }
 
     public static void main(String[] args) {
+        Executors.newFixedThreadPool(100);
         DeadlockDemo deadlockDemo = new DeadlockDemo(10);
         Thread thread1 = new Thread(() -> System.out.println(deadlockDemo.calculateSum()));
         Thread thread2 = new Thread(() -> System.out.println(deadlockDemo.calculateMultiplication()));
         thread1.start();
         thread2.start();
         try {
-            //这里得让主线程休眠一段时间
+            //这里得让主线程休眠一段时间，在这里执行 jstack 显示主线程处于 TIMED_WAITING (sleeping) 状态，thread1、thread2 都处于 WAITING (parking) 状态（调用了 LockSupport.park 方法）
             TimeUnit.SECONDS.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();

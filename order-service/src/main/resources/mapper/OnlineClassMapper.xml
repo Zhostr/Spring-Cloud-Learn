@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zst.order.mapper.OnlineClassMapper">
+
+    <select id="getAllOnlineClass" resultType="com.zst.order.entity.OnlineClassEntity">
+        SELECT *
+        FROM online_class
+    </select>
+
+    <!--  这个 key 与类型无关，必须是 $，因为 Map 里的 key 类型为 String，用 # 会加双引号
+          添加 ignore 之后，也就不报错了，只是返回影响的行数 0  -->
+    <insert id="insertMap">
+        INSERT IGNORE INTO ${tableName}
+        <foreach collection="columns.entrySet()" index="key" open="(" close=")" separator=",">
+            ${key}
+        </foreach>
+        VALUES
+        <foreach collection="columns.entrySet()" index="key" item="value" open="(" close=")" separator=",">
+            #{value}
+        </foreach>
+    </insert>
+
+    <select id="getAllDistinctLessonId" resultType="long">
+        SELECT lesson_id
+        FROM online_class
+    </select>
+
+
+</mapper>

@@ -1,11 +1,12 @@
 package com.zst.test;
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.io.File;
+import java.util.*;
 
 /**
  * @description:
@@ -13,6 +14,7 @@ import java.util.TreeSet;
  * @date: 2020/01/09 下午7:15
  * @version: V1.0
  */
+@Slf4j
 public class CollectionTest {
 
     @Test
@@ -35,6 +37,22 @@ public class CollectionTest {
         });
         sortedCourseIdSet.addAll(courseIdSet);
         sortedCourseIdSet.forEach(System.out::println);
+    }
+
+    public static void main(String[] args) {
+        File file = new File("/Users/zhoust/Desktop/README.txt");
+        System.out.println(file.getName());
+        System.out.println(file.getAbsolutePath());
+        Integer[] array = new Integer[]{10, 3, 5, 7,9,6};
+        Arrays.sort(array, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2.compareTo(o1);
+            }
+        });
+        for (int i : array) {
+            log.info("{}", i);
+        }
     }
 
 

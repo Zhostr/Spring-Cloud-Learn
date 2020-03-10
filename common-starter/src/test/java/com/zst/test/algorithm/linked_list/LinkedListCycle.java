@@ -19,14 +19,9 @@ public class LinkedListCycle {
         ListNode slower = head;
         ListNode faster = head;
         //slower != null，校验 head 不为空
-        while (slower != null && slower.next != null) {
+        while (slower != null && faster != null && faster.next != null) {
             slower = slower.next;
-            if (faster.next != null && faster.next.next != null) {
-                faster = faster.next.next;
-            }
-            else {
-                return false;
-            }
+            faster = faster.next.next;
             if(faster == slower) {
                 return true;
             }
@@ -75,6 +70,51 @@ public class LinkedListCycle {
             }
         }
         return head;
+    }
+
+    /**
+     * https://leetcode.com/problems/intersection-of-two-linked-lists/submissions/
+     * 判断两个链表的相交节点（不能改变原链表）
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        int sizeA = size(headA);
+        int sizeB = size(headB);
+
+        ListNode aHead = headA;
+        ListNode bHead = headB;
+        if (sizeA > sizeB) {
+            for (int i = 0; i < sizeA - sizeB; i++) {
+                aHead = aHead.next;
+            }
+        }
+        else if(sizeA < sizeB) {
+            for (int i = 0; i < sizeB - sizeA; i++) {
+                bHead = bHead.next;
+            }
+        }
+
+        while (aHead != null && bHead != null) {
+            //注意这里是 aHead == bHead，不是 val 相等
+            if (aHead == bHead) {
+                return aHead;
+            }
+            aHead = aHead.next;
+            bHead = bHead.next;
+        }
+        return null;
+    }
+
+    int size(ListNode node) {
+        int result = 0;
+
+        while (node != null) {
+            result ++;
+            node = node.next;
+        }
+        return result;
     }
 
     static class ListNode {

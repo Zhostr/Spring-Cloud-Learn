@@ -11,7 +11,6 @@ import java.util.Objects;
 
 /**
  * @description: 自定义接口返回体
- * @author: 戈子根<ge_zg@suixingpay.com>
  * @date: 2017/11/21 上午11:16
  * @version: V1.0
  */

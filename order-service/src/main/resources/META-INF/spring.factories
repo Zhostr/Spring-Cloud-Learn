@@ -1,0 +1,6 @@
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+com.zst.order.config.env.CustomBootstrapConfiguration
+
+#参考文档 https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html#boot-features-locating-auto-configuration-candidates
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.zst.order.config.env.CustomEnvironmentPostProcessor

@@ -21,8 +21,11 @@ spring:
   # 而该服务本身就是一个 Eureka 服务器（现在是配置 Eureka 集群，需要彼此相互注册）
 eureka:
   server:
-#    enable-self-preservation: false # 关闭自我保护机制，默认不关闭
-#    evictionIntervalTimerInMs: 4000 #剔除无效 Eureka 实例的时间间隔，默认是 60s
+    enable-self-preservation: false # 关闭自我保护机制，默认不关闭
+    evictionIntervalTimerInMs: 1000 #Eureka Server 每隔多长时间检查并剔除无效 Eureka 实例（就是在 lease-expiration-duration-in-seconds 还未收到心跳）
+    renewal-threshold-update-interval-ms:
+    #peer-eureka-nodes-update-interval-ms: Eureka 集群各个节点之间同步注册信息的间隔
+
   instance:
     hostname: localhost
   client:
